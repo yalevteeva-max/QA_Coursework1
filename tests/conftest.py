@@ -2,6 +2,7 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import pymysql
+import psycopg2  
 
 @pytest.fixture
 def driver():
@@ -21,6 +22,18 @@ def db_connection():
         password='pass',
         database='app',
         cursorclass=pymysql.cursors.DictCursor
+    )
+    yield connection
+    connection.close()
+
+@pytest.fixture
+def db_connection_postgres():
+    connection = psycopg2.connect(
+        host='localhost',
+        port=5432,
+        user='app',
+        password='pass',
+        dbname='app'
     )
     yield connection
     connection.close()

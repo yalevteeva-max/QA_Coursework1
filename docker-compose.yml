@@ -1,4 +1,3 @@
-name: aqa-shop
 version: '3.8'
 
 services:
@@ -15,6 +14,21 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 5s
       retries: 10
+
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d app"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  # --------------------------
 
   gate-simulator:
     image: node:18
